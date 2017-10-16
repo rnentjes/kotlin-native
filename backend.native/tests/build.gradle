@@ -2255,28 +2255,28 @@ task interop_echo_server(type: RunInteropKonanTest) {
     interop = 'sockets'
 }
 
-//if (isMac()) {
-//    task interop_opengl_teapot(type: RunInteropKonanTest) {
-//    disabled = (project.testTarget == 'wasm32') // No interop for wasm yet.
-//        run = false
-//        source = "interop/basics/opengl_teapot.kt"
-//        interop = 'opengl'
-//    }
-//
-//    task interop_objc_smoke(type: RunInteropKonanTest) {
-//        disabled = (project.testTarget == 'wasm32') // No interop for wasm yet.
-//        goldValue = "Hello, World!\nKotlin says: Hello, everybody!\nHello from Kotlin\n2, 1\n" +
-//                "true\ntrue\nDeallocated\nDeallocated\n"
-//
-//        source = "interop/objc/smoke.kt"
-//        interop = 'objcSmoke'
-//
-//        doFirst {
-//            execClang {
-//                args "$projectDir/interop/objc/smoke.m"
-//                args "-lobjc", '-fobjc-arc'
-//                args '-fPIC', '-shared', '-o', "$buildDir/libobjcsmoke.dylib"
-//            }
-//        }
-//    }
-//}
+if (isMac()) {
+    task interop_opengl_teapot(type: RunInteropKonanTest) {
+    disabled = (project.testTarget == 'wasm32') // No interop for wasm yet.
+        run = false
+        source = "interop/basics/opengl_teapot.kt"
+        interop = 'opengl'
+    }
+
+    task interop_objc_smoke(type: RunInteropKonanTest) {
+        disabled = (project.testTarget == 'wasm32') // No interop for wasm yet.
+        goldValue = "Hello, World!\nKotlin says: Hello, everybody!\nHello from Kotlin\n2, 1\n" +
+                "true\ntrue\nDeallocated\nDeallocated\n"
+
+        source = "interop/objc/smoke.kt"
+        interop = 'objcSmoke'
+
+        doFirst {
+            execClang {
+                args "$projectDir/interop/objc/smoke.m"
+                args "-lobjc", '-fobjc-arc'
+                args '-fPIC', '-shared', '-o', "$buildDir/libobjcsmoke.dylib"
+            }
+        }
+    }
+}
