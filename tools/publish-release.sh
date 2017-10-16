@@ -20,18 +20,17 @@ function stage {
 
 set -eu
 
-if [[ $# -lt 1 ]]; then
-    echo "No version is set. Usage: `basename $0` [--no-upload] <version>"
-    exit 1
-fi
-
+VERSION=""
 UPLOAD=true
 # Prepare command line args.
-while [[ $# -gt 1 ]]; do
+while [[ $# -gt 0 ]]; do
     arg="$1"
     case $arg in
         --no-upload)
             UPLOAD=false
+            ;;
+        [0-9.]*)
+            VERSION="$arg"
             ;;
         *)
             echo "Unknown option: $arg. Usage: `basename $0` [--no-upload] <version>"
@@ -41,6 +40,11 @@ while [[ $# -gt 1 ]]; do
     shift
 done
 
+if [[ -z $VERSION ]]; then
+    echo "No version is set. Usage: `basename $0` [--no-upload] <version>"
+    exit 1
+fi
+
 # The variables used.
 case "$OSTYPE" in
   darwin*)  OS=macos ;;
@@ -48,7 +52,6 @@ case "$OSTYPE" in
   *)        echo "unknown: $OSTYPE" && exit 1;;
 esac
 
-VERSION=${1}
 BRANCH="v${VERSION}-fixes"
 REPO="https://github.com/JetBrains/kotlin-native.git"
 TREE_DIR=${PWD}
